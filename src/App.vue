@@ -1,5 +1,8 @@
 <script setup>
   import { reactive } from 'vue';
+  import Cabecalho from './components/Cabecalho.vue';
+  import Principal from './components/Principal.vue';
+  import Rodape from './components/Rodape.vue';
 
   const estado = reactive({
     primeiroValor: 0,
@@ -35,10 +38,10 @@
         estado.resultado = estado.primeiroValor * estado.segundoValor;
         break;
       case 'divisao':
-        estado.resultado = estado.primeiroValor / estado.segundoValor;
+        estado.resultado = Number(estado.primeiroValor / estado.segundoValor).toFixed(2);
         break;
       case 'potenciacao':
-        estado.resultado = Math.pow(estado.primeiroValor, estado.segundoValor);
+        estado.resultado = Number(Math.pow(estado.primeiroValor, estado.segundoValor)).toFixed(2);
         break;
       default:
         estado.resultado = 0;
@@ -47,39 +50,24 @@
 </script>
 
 <template>
-    <header class="header">
-      <h1>Exercício VueJS</h1>
-    </header>
+    <Cabecalho />
     <div class="container">
-      <main>
-        <div class="main_header">
-          <h2>Calculadora Simples</h2>
-        </div>
-        <div class="main_body">
-          <form>
-            <input type="text" placeholder="Valor 1" v-model="estado.primeiroValor" @keyup="valorUm" />
-            <select @change="operacao"  v-model="estado.operacao">
-              <option value="adicao" selected>+</option>
-              <option value="subtracao">-</option>
-              <option value="multiplicacao">*</option>
-              <option value="divisao">/</option>
-              <option value="potenciacao">^</option>
-            </select>
-            <input type="text" placeholder="Valor 2" v-model="estado.segundoValor" @keyup="valorDois" />
-          </form>
-        </div>
-        <div class="main_footer">
-          <span class="titulo_resultado">Resultado</span>
-          <span class="valor_resultado">{{ estado.resultado }}</span>
-        </div>
-      </main>
+      <Principal :primeiro-valor="estado.primeiroValor" :valor-um="valorUm" :segundo-valor="estado.segundoValor" :valor-dois="valorDois" :operacao="estado.operacao" :calcular="operacao" :resultado="estado.resultado" />
     </div>
     <footer class="footer">
-      <span>Desenvolvido por Claudio</span>
+      <Rodape />
     </footer>
 </template>
 
-<style scoped>
+<style>
+  
+  /*
+    Tirei o scoped para aplicar o CSS de forma global.
+    Li que a boa prática seria criar o style scope em cada component,
+    mas como tenho pouco tempo para estudar e desenvolver no curso
+    resolvi fazer globalmente.
+  */
+
   * {
     margin: 0;
     padding: 0;
@@ -88,7 +76,6 @@
   }
 
   body {
-    background-color: #000;
     position: relative;
   }
 
@@ -156,6 +143,7 @@
     top: 5%;
     left: 50%;
     transform: translate(-50%, -50%);
+    margin-top: 0;
   }
 
   main {
@@ -194,6 +182,18 @@
     bottom: 5%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  button {
+    margin-top: 8px;
+    border-color: #079992;
+    border-radius: 4px;
+    outline: none;
+    padding: 4px 8px;
+    color: #079992;
+    font-weight: bold;
+    background-color: #fff;
+    cursor: pointer;
   }
 
   @media (max-width: 680px) {
